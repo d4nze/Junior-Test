@@ -17,10 +17,10 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("No arguments provided");
     }
     std::string path(argv[1]);
-    PathValidator pathValidator(path);
-    if (!pathValidator.isValid())
+    PathValidator inputPathValidator(path);
+    if (!inputPathValidator.isValid())
     {
-        return exitWithError(pathValidator.getErrorMessage());
+        return exitWithError("Can't open input file. " + inputPathValidator.getErrorMessage());
     }
     std::system("pause");
     return 0;
