@@ -25,9 +25,9 @@ std::optional<std::string> PathValidator::generateErrorMessage(std::string_view 
     {
         return "Path is not a file";
     }
-    else if (std::filesystem::path(path).extension() != ".xml")
+    else if (std::filesystem::path(path).extension() != ".txt")
     {
-        return "Path must be an XML file";
+        return "Path must be an TXT file";
     }
     return std::nullopt;
 }
