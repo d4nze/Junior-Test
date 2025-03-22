@@ -1,12 +1,13 @@
-#ifndef INSTRUCTION_HPP
-#define INSTRUCTION_HPP
+#ifndef PREDICATE_HPP
+#define PREDICATE_HPP
+
 #include <cstdint>
 
-class Instruction
+class Predicate
 {
 public:
-    Instruction(char symbol);
-    virtual ~Instruction() = default;
+    Predicate(char symbol);
+    virtual ~Predicate() = default;
 
     virtual bool check() const = 0;
     char getSymbol() const;

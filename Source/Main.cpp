@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "PathValidator.hpp"
 
@@ -22,11 +23,19 @@ std::int32_t main(std::int32_t argc, char* argv[])
     {
         return exitWithError("Can't open input file. " + inputPathValidator.getErrorMessage());
     }
-    PathValidator instructionsPathValidator("Instructions.txt");
+
+    PathValidator instructionsPathValidator("Predicates.txt");
     if (!instructionsPathValidator.isValid())
     {
-        return exitWithError("Can't open instructions file. " + instructionsPathValidator.getErrorMessage());
+        return exitWithError("Can't open predicates file. " + instructionsPathValidator.getErrorMessage());
     }
+
+    std::wifstream instructionsFile("Predicates.txt");
+    if (!instructionsFile.is_open())
+    {
+        return exitWithError("Can't open predicates file.");
+    }
+    
     std::system("pause");
     return 0;
 }
