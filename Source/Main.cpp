@@ -22,6 +22,11 @@ std::int32_t main(std::int32_t argc, char* argv[])
     {
         return exitWithError("Can't open input file. " + inputPathValidator.getErrorMessage());
     }
+    PathValidator instructionsPathValidator("Instructions.txt");
+    if (!instructionsPathValidator.isValid())
+    {
+        return exitWithError("Can't open instructions file. " + instructionsPathValidator.getErrorMessage());
+    }
     std::system("pause");
     return 0;
 }
