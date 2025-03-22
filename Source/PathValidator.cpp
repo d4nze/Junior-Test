@@ -21,11 +21,11 @@ std::optional<std::string> PathValidator::generateErrorMessage(std::string_view 
     {
         return "Invalide path.";
     }
-    else if (!std::filesystem::is_regular_file(path))
+    if (!std::filesystem::is_regular_file(path))
     {
         return "Path is not a file.";
     }
-    else if (std::filesystem::path(path).extension() != ".txt")
+    if (std::filesystem::path(path).extension() != ".txt")
     {
         return "Path must be an TXT file.";
     }
