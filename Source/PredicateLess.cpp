@@ -5,5 +5,5 @@ PredicateLess::PredicateLess(const SymbolHolder& symbolHolder, std::int32_t requ
 
 bool PredicateLess::compare(std::int32_t compareTo) const
 {
-    return m_requires > compareTo;
+    return m_requires < compareTo;
 }
