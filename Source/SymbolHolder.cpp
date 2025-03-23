@@ -11,16 +11,13 @@ SymbolHolder::SymbolHolder() : m_size(0)
 }
 
 SymbolHolder::SymbolHolder(const std::string& symbolData)
-    : m_size(std::min<std::size_t>(4, symbolData.size() + 1))
+    : m_size(std::min<std::size_t>(4, symbolData.size()))
 {
     for (std::size_t i = 0; i < m_size; i++)
     {
         m_data[i] = symbolData[i];
     }
-    for (std::size_t i = m_size; i < 5; i++)
-    {
-        m_data[i] = '\0';
-    }
+    m_data[m_size] = '\0';
 }
 
 SymbolHolder::SymbolHolder(const SymbolHolder& other) : m_size(other.m_size)
@@ -39,6 +36,22 @@ const char* SymbolHolder::getData() const
 std::size_t SymbolHolder::getSize() const
 {
     return m_size;
+}
+
+bool SymbolHolder::operator<(const SymbolHolder& other) const
+{
+    if (m_size != other.m_size)
+    {
+        return m_size < other.m_size;
+    }
+    for (std::size_t i = 0; i < m_size; i++)
+    {
+        if (m_data[i] != other.m_data[i])
+        {
+            return static_cast<std::int32_t>(m_data[i]) < static_cast<std::int32_t>(other.m_data[i]);
+        }
+    }
+    return false;
 }
 
 bool SymbolHolder::operator==(const SymbolHolder& other) const

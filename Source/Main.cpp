@@ -1,7 +1,11 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <map>
+#include <vector>
+#include <set>
 
 #include "PathValidator.hpp"
+#include "PredicateFactory.hpp"
 #include "PredicateValidator.hpp"
 #include "SymbolHolder.hpp"
 
@@ -19,24 +23,37 @@ std::int32_t main(std::int32_t argc, char* argv[])
     {
         return exitWithError("No arguments provided");
     }
-    std::string inputPath(argv[1]);
-    PathValidator inputPathValidator(inputPath);
-    if (!inputPathValidator.isValid())
-    {
-        return exitWithError("Can't open input file. " + inputPathValidator.getErrorMessage());
-    }
 
-    PathValidator configPathValidator("Configuration.txt");
-    if (!configPathValidator.isValid())
+    std::string inputPath(argv[1]);
+    
+    if (auto pathError = PathValidator::generateErrorMessage(inputPath))
     {
-        return exitWithError("Can't open configuration file. " + configPathValidator.getErrorMessage());
+        return exitWithError("Can't open input file. " + pathError.value());
+    }
+    if (auto pathError = PathValidator::generateErrorMessage("Configuration.txt"))
+    {
+        return exitWithError("Can't open configuration file. " + pathError.value());
     }
 
     std::ifstream configFile("Configuration.txt");
+    std::ifstream inputFile(inputPath);
+    std::map<SymbolHolder, std::int32_t> symbolCounters;
+    std::set<SymbolHolder> symbols;
+    std::vector<Predicate*> predicates;
+
     if (!configFile.is_open())
     {
         return exitWithError("Can't open predicates file.");
     }
+    if (configFile.eof())
+    {
+        return exitWithError("Configuration file is empty.");
+    }
+    if (!inputFile.is_open())
+    {
+        return exitWithError("Can't open input file.");
+    }
+
     std::string part;
     do
     {
@@ -45,9 +62,18 @@ std::int32_t main(std::int32_t argc, char* argv[])
         {
             return exitWithError(predicateValidator.getErrorMessage());
         }
-        std::cout << "Instruction symbol: " << predicateValidator.getSymbol().getData();
-        std::cout << " Predicate: " << predicateValidator.getPredicate();
-        std::cout << " Count: " << predicateValidator.getCount() << '\n';
+
+        const SymbolHolder& symbolHolder = predicateValidator.getSymbol();
+        const std::string& sPredicate = predicateValidator.getPredicate();
+        std::int32_t count = predicateValidator.getCount();
+
+        symbolCounters[symbolHolder] = 0;
+        symbols.insert(symbolHolder);
+
+        if (Predicate* predicate = PredicateFactory::createPredicate(symbolHolder, count, sPredicate))
+        {
+            predicates.push_back(predicate);
+        }
     }
     while (!configFile.eof() && configFile >> part && part == "&&");
     if (!configFile.eof())
@@ -55,30 +81,28 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Expected '&&' or end of file.");
     }
 
-    std::ifstream inputFile(inputPath);
-    if (!inputFile.is_open())
+    for (char symbolPart; inputFile >> symbolPart;)
     {
-        return exitWithError("Can't open input file.");
-    }
-
-    for (std::string line; std::getline(inputFile, line);)
-    {
-        for (std::size_t i = 0; i < line.size();)
+        if (symbolPart == '\n')
         {
-            std::size_t lenght = SymbolHolder::predictSymbolLenght(line[i]);
-            if (lenght == 0 || i + lenght > line.size())
-            {
-                std::cout << "It broke" << '\n';
-                break;
-            }
-            if (lenght == 1)
-            {
-                std::cout << "Singlechar symbol: " << line[i++] << '\n';
-                continue;
-            }
-            SymbolHolder symbolHolder(line.substr(i, lenght));
-            std::cout << "Multichar symbol: " << symbolHolder.getData() << '\n';
-            i += lenght;
+            continue;
+        }
+        std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart);
+        if (lenght == 0)
+        {
+            return exitWithError("Unsupported character.");
+        }
+        std::string sSymbol(lenght, symbolPart);
+        for (std::size_t i = 1; i < lenght; i++)
+        {
+            inputFile >> symbolPart;
+            sSymbol[i] = symbolPart;
+        }
+        SymbolHolder symbolHolder(sSymbol);
+        if (symbols.find(symbolHolder) != symbols.end())
+        {
+            std::cout << "++" << sSymbol << '\n';
+            symbolCounters[symbolHolder]++;
         }
     }
     

@@ -13,6 +13,7 @@ public:
     const char* getData() const;
     std::size_t getSize() const;
 
+    bool operator<(const SymbolHolder& other) const;
     bool operator==(const SymbolHolder& other) const;
     
     static std::size_t predictSymbolLenght(char beggining);
