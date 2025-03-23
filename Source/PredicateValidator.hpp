@@ -1,13 +1,13 @@
-#ifndef INSTRUCTION_VALIDATOR_HPP
-#define INSTRUCTION_VALIDATOR_HPP
+#ifndef PREDICATE_VALIDATOR_HPP
+#define PREDICATE_VALIDATOR_HPP
 
 #include <string>
 #include <optional>
 
-class InstructionValidator
+class PredicateValidator
 {
 public:
-    InstructionValidator(std::string_view instruction);
+    PredicateValidator(std::string_view instruction);
 
     bool isValid() const;
 

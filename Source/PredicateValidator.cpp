@@ -1,39 +1,39 @@
-#include "InstructionValidator.hpp"
+#include "PredicateValidator.hpp"
 #include <sstream>
 
-InstructionValidator::InstructionValidator(std::string_view instruction)
+PredicateValidator::PredicateValidator(std::string_view instruction)
     : m_symbol('\0')
     , m_condition('\0')
     , m_count(-1)
     , m_errorMessage(generateErrorMessage(instruction))
 {}
 
-bool InstructionValidator::isValid() const
+bool PredicateValidator::isValid() const
 {
     return !m_errorMessage.has_value();
 }
 
-char InstructionValidator::getSymbol() const
+char PredicateValidator::getSymbol() const
 {
     return m_symbol;
 }
 
-char InstructionValidator::getCondition() const
+char PredicateValidator::getCondition() const
 {
     return m_condition;
 }
 
-std::int32_t InstructionValidator::getCount() const
+std::int32_t PredicateValidator::getCount() const
 {
     return m_count;
 }
 
-std::string InstructionValidator::getErrorMessage() const
+std::string PredicateValidator::getErrorMessage() const
 {
     return m_errorMessage.value_or("Unexpected error: can't get optional error message");
 }
 
-std::optional<std::string> InstructionValidator::generateErrorMessage(std::string_view instruction)
+std::optional<std::string> PredicateValidator::generateErrorMessage(std::string_view instruction)
 {
     std::string part;
     std::stringstream instructionStream(instruction.data());
@@ -104,7 +104,7 @@ std::optional<std::string> InstructionValidator::generateErrorMessage(std::strin
     return std::nullopt;
 }
 
-bool InstructionValidator::isNumber(char symbol) const
+bool PredicateValidator::isNumber(char symbol) const
 {
     return symbol >= '0' && symbol <= '9';
 }
