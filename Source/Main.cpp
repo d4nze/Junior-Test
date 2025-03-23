@@ -4,10 +4,10 @@
 #include <vector>
 #include <set>
 
+#include "InputDataReader.hpp"
 #include "PathValidator.hpp"
 #include "PredicateFactory.hpp"
 #include "PredicateValidator.hpp"
-#include "SymbolHolder.hpp"
 
 std::int32_t exitWithError(std::string_view errorMessage)
 {
@@ -43,9 +43,8 @@ std::int32_t main(std::int32_t argc, char* argv[])
     }
 
     std::ifstream configFile("Configuration.txt");
-    std::ifstream inputFile(inputPath);
     std::map<SymbolHolder, std::int32_t> symbolCounters;
-    std::set<SymbolHolder> symbols;
+    std::set<SymbolHolder> uniqueSymbols;
     std::vector<Predicate*> predicates;
 
     if (!configFile.is_open())
@@ -55,10 +54,6 @@ std::int32_t main(std::int32_t argc, char* argv[])
     if (configFile.eof())
     {
         return exitWithError("Configuration file is empty.");
-    }
-    if (!inputFile.is_open())
-    {
-        return exitWithError("Can't open input file.");
     }
 
     std::string part;
@@ -75,7 +70,7 @@ std::int32_t main(std::int32_t argc, char* argv[])
         std::int32_t count = predicateValidator.getCount();
 
         symbolCounters[symbolHolder] = 0;
-        symbols.insert(symbolHolder);
+        uniqueSymbols.insert(symbolHolder);
 
         if (Predicate* predicate = PredicateFactory::createPredicate(symbolHolder, count, sPredicate))
         {
@@ -88,28 +83,10 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Expected '&&' or end of file.");
     }
 
-    for (char symbolPart; inputFile >> symbolPart;)
+    InputDataReader inputDataReader(inputPath, uniqueSymbols, symbolCounters);
+    if (auto error = inputDataReader.readData())
     {
-        if (symbolPart == '\n')
-        {
-            continue;
-        }
-        std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart);
-        if (lenght == 0)
-        {
-            return exitWithError("Unsupported character.");
-        }
-        std::string sSymbol(lenght, symbolPart);
-        for (std::size_t i = 1; i < lenght; i++)
-        {
-            inputFile >> symbolPart;
-            sSymbol[i] = symbolPart;
-        }
-        SymbolHolder symbolHolder(sSymbol);
-        if (symbols.find(symbolHolder) != symbols.end())
-        {
-            symbolCounters[symbolHolder]++;
-        }
+        return exitSuccessfully(error.value());
     }
 
     for (Predicate* predicate : predicates)
