@@ -1,11 +1,12 @@
 #include "PredicateValidator.hpp"
-#include <sstream>
 
-PredicateValidator::PredicateValidator(std::string_view instruction)
-    : m_symbol('\0')
-    , m_condition('\0')
+#include <limits>
+
+PredicateValidator::PredicateValidator(std::ifstream& configFile)
+    : m_symbol()
+    , m_predicate()
     , m_count(-1)
-    , m_errorMessage(generateErrorMessage(instruction))
+    , m_errorMessage(generateErrorMessage(configFile))
 {}
 
 bool PredicateValidator::isValid() const
@@ -13,14 +14,14 @@ bool PredicateValidator::isValid() const
     return !m_errorMessage.has_value();
 }
 
-char PredicateValidator::getSymbol() const
+const SymbolHolder& PredicateValidator::getSymbol() const
 {
     return m_symbol;
 }
 
-char PredicateValidator::getCondition() const
+const std::string& PredicateValidator::getPredicate() const
 {
-    return m_condition;
+    return m_predicate;
 }
 
 std::int32_t PredicateValidator::getCount() const
@@ -33,74 +34,99 @@ std::string PredicateValidator::getErrorMessage() const
     return m_errorMessage.value_or("Unexpected error: can't get optional error message");
 }
 
-std::optional<std::string> PredicateValidator::generateErrorMessage(std::string_view instruction)
+std::optional<std::string> PredicateValidator::generateErrorMessage(std::ifstream& configFile)
 {
-    std::string part;
-    std::stringstream instructionStream(instruction.data());
-    instructionStream >> part;
-    if (part != "ПРИСУТСТВУЕТ")
+    if (auto error = checkSymbol(configFile))
     {
-        return "Missing 'ПРИСУТСТВУЕТ' keyword.";
+        return error;
     }
-    instructionStream >> part;
-    if (part != "СИМВОЛ")
+    if (auto error = checkPredicate(configFile))
     {
-        return "Missing 'СИМВОЛ' keyword.";
+        return error;
     }
-    instructionStream >> part;
-    if (part.size() < 3)
+    if (auto error = checkCount(configFile))
     {
-        return "Invalid symbol sintax.";
+        return error;
     }
-    if (part.size() > 3)
+    return std::nullopt;
+}
+
+std::optional<std::string> PredicateValidator::checkSymbol(std::ifstream& configFile)
+{
+    if (configFile.eof())
     {
-        return "Symbol must be 1 character long.";
+        return "Symbol part is empty.";
     }
-    if (part[0] != '«')
+
+    std::string symbolPart;
+    configFile >> symbolPart;
+
+    if (symbolPart.size() < 3)
     {
-        return "Missing '\"' symbol.";
+        return "Symbol incorrect syntax.";
     }
-    m_symbol = part[1];
-    if (part[0] != '»')
+    if (symbolPart[0] != '\'')
     {
-        return "Missing '\"' symbol.";
+        return "Missing opening '.";
     }
-    instructionStream >> part;
-    if (part.size() != 1)
+    if (symbolPart.back() != '\'')
     {
-        return "Condition must be 1 character long.";
+        return "Missing closing '.";
     }
-    m_condition = part[0];
-    if (m_condition != '<' && m_condition != '=' && m_condition != '>')
+
+    std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart[1]);
+    std::string sSymbol = symbolPart.substr(1, lenght);
+    if (lenght == 0 || lenght + 2 != symbolPart.size())
     {
-        return "Condition must be '<', '=' or '>'.";
+        return "Unsupported character: " + sSymbol + ".";
     }
-    instructionStream >> part;
-    if (part.empty())
+    m_symbol = SymbolHolder(sSymbol);
+
+    return std::nullopt;
+}
+
+std::optional<std::string> PredicateValidator::checkPredicate(std::ifstream& configFile)
+{
+    if (configFile.eof())
     {
-        return "Missing count.";
+        return "Predicate part is empty.";
     }
-    if (!isNumber(part[0]) && part[0] != L'-')
+    
+    std::string predicatePart;
+    configFile >> predicatePart;
+
+    if (predicatePart != "==" && predicatePart != ">" && predicatePart != "<")
     {
-        return "Count must be a number.";
+        return "Predicate must be '=='/'<'/'>'";
     }
-    for (std::size_t i = 1; i < part.size(); ++i)
+
+    m_predicate = predicatePart;
+    return std::nullopt;
+}
+
+std::optional<std::string> PredicateValidator::checkCount(std::ifstream& configFile)
+{
+    if (configFile.eof())
     {
-        if (!isNumber(part[i]))
-        {
-            return "Count must be a number.";
-        }
+        return "Count part is empty.";
     }
-    m_count = std::stoi(part);
-    instructionStream >> part;
-    if (part != "РАЗ")
+    
+    std::string countPart;
+    configFile >> countPart;
+    std::size_t index;
+    std::int64_t llCount = std::stoll(countPart, &index);
+    
+    if (index != countPart.length())
     {
-        return "Missing 'РАЗ' keyword.";
+        return "Invalid characters found in input string";
     }
-    if (!instructionStream.eof())
+    if (llCount < std::numeric_limits<std::int32_t>::min() ||
+        llCount > std::numeric_limits<std::int32_t>::max())
     {
-        return "Unexpected symbols after 'РАЗ' keyword.";
+        return "Value is out of range for int32_t";
     }
+    
+    m_count = static_cast<std::int32_t>(llCount);
     return std::nullopt;
 }
 

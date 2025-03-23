@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "PathValidator.hpp"
+#include "PredicateValidator.hpp"
 #include "SymbolHolder.hpp"
 
 std::int32_t exitWithError(std::string_view errorMessage)
@@ -25,20 +26,41 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Can't open input file. " + inputPathValidator.getErrorMessage());
     }
 
-    PathValidator predicatesPathValidator("Predicates.txt");
-    if (!predicatesPathValidator.isValid())
+    PathValidator configPathValidator("Configuration.txt");
+    if (!configPathValidator.isValid())
     {
-        return exitWithError("Can't open predicates file. " + predicatesPathValidator.getErrorMessage());
+        return exitWithError("Can't open configuration file. " + configPathValidator.getErrorMessage());
     }
 
-    std::ifstream predicatesFile("Predicates.txt");
-    if (!predicatesFile.is_open())
+    std::ifstream configFile("Configuration.txt");
+    if (!configFile.is_open())
     {
         return exitWithError("Can't open predicates file.");
     }
+    std::string part;
+    do
+    {
+        PredicateValidator predicateValidator(configFile);
+        if (!predicateValidator.isValid())
+        {
+            return exitWithError(predicateValidator.getErrorMessage());
+        }
+        std::cout << "Instruction symbol: " << predicateValidator.getSymbol().getData();
+        std::cout << " Predicate: " << predicateValidator.getPredicate();
+        std::cout << " Count: " << predicateValidator.getCount() << '\n';
+    }
+    while (!configFile.eof() && configFile >> part && part == "&&");
+    if (!configFile.eof())
+    {
+        if (part == "&&")
+        {
+            return exitWithError("lox");
+        }
+        return exitWithError("Expected '&&' or end of file.");
+    }
 
     std::ifstream inputFile(inputPath);
-    if (!predicatesFile.is_open())
+    if (!inputFile.is_open())
     {
         return exitWithError("Can't open input file.");
     }
