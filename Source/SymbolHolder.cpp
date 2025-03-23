@@ -19,6 +19,7 @@ bool SymbolHolder::operator==(const SymbolHolder& other) const
     return m_data == other.m_data;
 }
 
+// Это ГПТ
 std::size_t SymbolHolder::predictSymbolLenght(char beggining)
 {
     unsigned char uBeggining = static_cast<unsigned char>(beggining);
@@ -39,4 +40,10 @@ std::size_t SymbolHolder::predictSymbolLenght(char beggining)
         return 4;
     }
     return 0;
+}
+
+// И это тоже
+bool SymbolHolder::isStartOfSymbol(char part)
+{
+    return (part & 0xC0) == 0x80;
 }

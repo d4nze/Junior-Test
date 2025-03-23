@@ -14,6 +14,7 @@ public:
     bool operator==(const SymbolHolder& other) const;
     
     static std::size_t predictSymbolLenght(char beggining);
+    static bool isStartOfSymbol(char part);
 
 private:
     std::string m_data;
