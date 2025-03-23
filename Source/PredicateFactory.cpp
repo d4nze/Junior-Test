@@ -1,4 +1,5 @@
 #include "PredicateFactory.hpp"
+#include "PredicateLess.hpp"
 #include "PredicateMore.hpp"
 
 Predicate* PredicateFactory::createPredicate(const SymbolHolder& symbolHolder,
@@ -6,6 +7,10 @@ Predicate* PredicateFactory::createPredicate(const SymbolHolder& symbolHolder,
                                              const std::string& predicate)
 {
     if (predicate == ">")
+    {
+        return new PredicateLess(symbolHolder, requires);
+    }
+    if (predicate == "<")
     {
         return new PredicateMore(symbolHolder, requires);
     }
