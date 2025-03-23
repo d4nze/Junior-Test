@@ -75,11 +75,11 @@ std::optional<std::string> PredicateValidator::checkSymbol(std::ifstream& config
     }
 
     std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart[1]);
-    std::string sSymbol = symbolPart.substr(1, lenght);
     if (lenght == 0 || lenght + 2 != symbolPart.size())
     {
-        return "Unsupported character: " + sSymbol + ".";
+        return "Unsupported character: " + symbolPart.substr(1, symbolPart.size() - 2) + ".";
     }
+    std::string sSymbol = symbolPart.substr(1, lenght);
     m_symbol = SymbolHolder(sSymbol);
 
     return std::nullopt;
