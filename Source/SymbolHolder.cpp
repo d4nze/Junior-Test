@@ -11,7 +11,7 @@ SymbolHolder::SymbolHolder() : m_size(0)
 }
 
 SymbolHolder::SymbolHolder(const std::string& symbolData)
-    : m_size(std::min<std::size_t>(4, symbolData.size()))
+    : m_size(std::min<std::size_t>(4, symbolData.size() + 1))
 {
     for (std::size_t i = 0; i < m_size; i++)
     {
