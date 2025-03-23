@@ -6,7 +6,9 @@
 class SymbolHolder
 {
 public:
+    SymbolHolder();
     SymbolHolder(const std::string& symbolData);
+    SymbolHolder(const SymbolHolder& other);
 
     const char* getData() const;
     std::size_t getSize() const;
@@ -17,7 +19,8 @@ public:
     static bool isStartOfSymbol(char part);
 
 private:
-    std::string m_data;
+    char m_data[5];
+    std::size_t m_size;
 };
 
 #endif

@@ -2,21 +2,55 @@
 
 #include <algorithm>
 
-SymbolHolder::SymbolHolder(const std::string& symbolData) : m_data(symbolData) {}
+SymbolHolder::SymbolHolder() : m_size(0)
+{
+    for (std::size_t i = 0; i < 5; i++)
+    {
+        m_data[i] = '\0';
+    }
+}
+
+SymbolHolder::SymbolHolder(const std::string& symbolData)
+    : m_size(std::min<std::size_t>(4, symbolData.size()))
+{
+    for (std::size_t i = 0; i < m_size; i++)
+    {
+        m_data[i] = symbolData[i];
+    }
+    for (std::size_t i = m_size; i < 5; i++)
+    {
+        m_data[i] = '\0';
+    }
+}
+
+SymbolHolder::SymbolHolder(const SymbolHolder& other) : m_size(other.m_size)
+{
+    for (std::size_t i = 0; i < 5; i++)
+    {
+        m_data[i] = other.m_data[i];
+    }
+}
 
 const char* SymbolHolder::getData() const
 {
-    return m_data.c_str();
+    return m_data;
 }
 
 std::size_t SymbolHolder::getSize() const
 {
-    return m_data.size();
+    return m_size;
 }
 
 bool SymbolHolder::operator==(const SymbolHolder& other) const
 {
-    return m_data == other.m_data;
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        if (m_data[i] != other.m_data[i])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Это ГПТ
