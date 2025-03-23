@@ -17,6 +17,13 @@ std::int32_t exitWithError(std::string_view errorMessage)
     return 1;
 }
 
+std::int32_t exitSuccessfully(std::string_view successMessage)
+{
+    std::cout << successMessage << '\n';
+    std::system("pause");
+    return 0;
+}
+
 std::int32_t main(std::int32_t argc, char* argv[])
 {
     if (argc <= 1)
@@ -105,7 +112,14 @@ std::int32_t main(std::int32_t argc, char* argv[])
             symbolCounters[symbolHolder]++;
         }
     }
+
+    for (Predicate* predicate : predicates)
+    {
+        if (!predicate->compare(symbolCounters.at(predicate->getSymbolHolder())))
+        {
+            return exitSuccessfully("File doesn't fit the policy");
+        }
+    }
     
-    std::system("pause");
-    return 0;
+    return exitSuccessfully("File does fit the policy");
 }
