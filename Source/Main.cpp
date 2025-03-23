@@ -30,7 +30,7 @@ std::int32_t main(std::int32_t argc, char* argv[])
 
     std::string inputPath(argv[1]);
     std::string configPath("Configuration.txt");
-    
+
     if (auto pathError = PathValidator::generateErrorMessage(inputPath))
     {
         return exitWithError("Can't open input file. " + pathError.value());
@@ -45,12 +45,12 @@ std::int32_t main(std::int32_t argc, char* argv[])
     std::vector<Predicate*> predicates;
 
     ConfigurationDataReader configDataReader(configPath, predicates, uniqueSymbols, symbolCounters);
+    InputDataReader inputDataReader(inputPath, uniqueSymbols, symbolCounters);
+
     if (auto error = configDataReader.readData())
     {
         return exitWithError(error.value());
     }
-
-    InputDataReader inputDataReader(inputPath, uniqueSymbols, symbolCounters);
     if (auto error = inputDataReader.readData())
     {
         return exitWithError(error.value());
@@ -63,6 +63,5 @@ std::int32_t main(std::int32_t argc, char* argv[])
             return exitSuccessfully("File doesn't fit the policy");
         }
     }
-    
     return exitSuccessfully("File does fit the policy");
 }
