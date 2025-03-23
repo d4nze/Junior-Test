@@ -1,9 +1,6 @@
-#include <fstream>
 #include <iostream>
-#include <map>
-#include <vector>
-#include <set>
 
+#include "ConfigurationDataReader.hpp"
 #include "InputDataReader.hpp"
 #include "PathValidator.hpp"
 #include "PredicateFactory.hpp"
@@ -42,51 +39,20 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Can't open configuration file. " + pathError.value());
     }
 
-    std::ifstream configFile("Configuration.txt");
     std::map<SymbolHolder, std::int32_t> symbolCounters;
     std::set<SymbolHolder> uniqueSymbols;
     std::vector<Predicate*> predicates;
 
-    if (!configFile.is_open())
+    ConfigurationDataReader configDataReader("Configuration.txt", predicates, uniqueSymbols, symbolCounters);
+    if (auto error = configDataReader.readData())
     {
-        return exitWithError("Can't open predicates file.");
-    }
-    if (configFile.eof())
-    {
-        return exitWithError("Configuration file is empty.");
-    }
-
-    std::string part;
-    do
-    {
-        PredicateValidator predicateValidator(configFile);
-        if (!predicateValidator.isValid())
-        {
-            return exitWithError(predicateValidator.getErrorMessage());
-        }
-
-        const SymbolHolder& symbolHolder = predicateValidator.getSymbol();
-        const std::string& sPredicate = predicateValidator.getPredicate();
-        std::int32_t count = predicateValidator.getCount();
-
-        symbolCounters[symbolHolder] = 0;
-        uniqueSymbols.insert(symbolHolder);
-
-        if (Predicate* predicate = PredicateFactory::createPredicate(symbolHolder, count, sPredicate))
-        {
-            predicates.push_back(predicate);
-        }
-    }
-    while (!configFile.eof() && configFile >> part && part == "&&");
-    if (!configFile.eof())
-    {
-        return exitWithError("Expected '&&' or end of file.");
+        return exitWithError(error.value());
     }
 
     InputDataReader inputDataReader(inputPath, uniqueSymbols, symbolCounters);
     if (auto error = inputDataReader.readData())
     {
-        return exitSuccessfully(error.value());
+        return exitWithError(error.value());
     }
 
     for (Predicate* predicate : predicates)
