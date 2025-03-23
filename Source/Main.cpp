@@ -29,12 +29,13 @@ std::int32_t main(std::int32_t argc, char* argv[])
     }
 
     std::string inputPath(argv[1]);
+    std::string configPath("Configuration.txt");
     
     if (auto pathError = PathValidator::generateErrorMessage(inputPath))
     {
         return exitWithError("Can't open input file. " + pathError.value());
     }
-    if (auto pathError = PathValidator::generateErrorMessage("Configuration.txt"))
+    if (auto pathError = PathValidator::generateErrorMessage(configPath))
     {
         return exitWithError("Can't open configuration file. " + pathError.value());
     }
@@ -43,7 +44,7 @@ std::int32_t main(std::int32_t argc, char* argv[])
     std::set<SymbolHolder> uniqueSymbols;
     std::vector<Predicate*> predicates;
 
-    ConfigurationDataReader configDataReader("Configuration.txt", predicates, uniqueSymbols, symbolCounters);
+    ConfigurationDataReader configDataReader(configPath, predicates, uniqueSymbols, symbolCounters);
     if (auto error = configDataReader.readData())
     {
         return exitWithError(error.value());
