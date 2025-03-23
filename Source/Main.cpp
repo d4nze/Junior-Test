@@ -108,7 +108,6 @@ std::int32_t main(std::int32_t argc, char* argv[])
         SymbolHolder symbolHolder(sSymbol);
         if (symbols.find(symbolHolder) != symbols.end())
         {
-            std::cout << "++" << sSymbol << '\n';
             symbolCounters[symbolHolder]++;
         }
     }
