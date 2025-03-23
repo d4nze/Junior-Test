@@ -52,10 +52,6 @@ std::int32_t main(std::int32_t argc, char* argv[])
     while (!configFile.eof() && configFile >> part && part == "&&");
     if (!configFile.eof())
     {
-        if (part == "&&")
-        {
-            return exitWithError("lox");
-        }
         return exitWithError("Expected '&&' or end of file.");
     }
 
