@@ -14,7 +14,7 @@ public:
     const SymbolHolder& getSymbolHolder() const;
     std::int32_t getRequired() const;
 
-private:
+protected:
     const SymbolHolder m_symbolHolder;
     std::int32_t m_requires;
 };
