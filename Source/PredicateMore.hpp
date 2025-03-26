@@ -6,7 +6,7 @@
 class PredicateMore : public Predicate
 {
 public:
-    PredicateMore(const SymbolHolder& symbolHolder, std::int32_t requires);
+    PredicateMore(const Symbol& symbolHolder, std::int32_t requires);
 
     bool compare(std::int32_t compareTo) const override;
 };

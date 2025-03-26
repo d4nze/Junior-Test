@@ -3,7 +3,7 @@
 #include "PredicateLess.hpp"
 #include "PredicateMore.hpp"
 
-Predicate* PredicateFactory::createPredicate(const SymbolHolder& symbolHolder,
+Predicate* PredicateFactory::createPredicate(const Symbol& symbolHolder,
                                              std::int32_t requires,
                                              const std::string& predicate)
 {

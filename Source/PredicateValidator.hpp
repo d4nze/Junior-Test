@@ -5,7 +5,7 @@
 #include <string>
 #include <optional>
 
-#include "SymbolHolder.hpp"
+#include "Symbol.hpp"
 
 class PredicateValidator
 {
@@ -14,7 +14,7 @@ public:
 
     bool isValid() const;
 
-    const SymbolHolder& getSymbol() const;
+    const Symbol& getSymbol() const;
     const std::string& getPredicate() const;
     std::int32_t getCount() const;
     std::string getErrorMessage() const;
@@ -28,7 +28,7 @@ private:
     bool isNumber(char symbol) const;
 
 private:
-    SymbolHolder m_symbol;
+    Symbol m_symbol;
     std::string m_predicate;
     std::int32_t m_count;
     std::optional<std::string> m_errorMessage;

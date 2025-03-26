@@ -6,7 +6,7 @@
 class PredicateFactory
 {
 public:
-    static Predicate* createPredicate(const SymbolHolder& symbolHolder,
+    static Predicate* createPredicate(const Symbol& symbolHolder,
                                       std::int32_t requires,
                                       const std::string& predicate);
 };

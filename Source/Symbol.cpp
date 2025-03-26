@@ -1,8 +1,8 @@
-#include "SymbolHolder.hpp"
+#include "Symbol.hpp"
 
 #include <algorithm>
 
-SymbolHolder::SymbolHolder() : m_size(0)
+Symbol::Symbol() : m_size(0)
 {
     for (std::size_t i = 0; i < 5; i++)
     {
@@ -10,7 +10,7 @@ SymbolHolder::SymbolHolder() : m_size(0)
     }
 }
 
-SymbolHolder::SymbolHolder(const std::string& symbolData)
+Symbol::Symbol(const std::string& symbolData)
     : m_size(std::min<std::size_t>(4, symbolData.size()))
 {
     for (std::size_t i = 0; i < m_size; i++)
@@ -20,7 +20,7 @@ SymbolHolder::SymbolHolder(const std::string& symbolData)
     m_data[m_size] = '\0';
 }
 
-SymbolHolder::SymbolHolder(const SymbolHolder& other) : m_size(other.m_size)
+Symbol::Symbol(const Symbol& other) : m_size(other.m_size)
 {
     for (std::size_t i = 0; i < 5; i++)
     {
@@ -28,17 +28,17 @@ SymbolHolder::SymbolHolder(const SymbolHolder& other) : m_size(other.m_size)
     }
 }
 
-const char* SymbolHolder::getData() const
+const char* Symbol::getData() const
 {
     return m_data;
 }
 
-std::size_t SymbolHolder::getSize() const
+std::size_t Symbol::getSize() const
 {
     return m_size;
 }
 
-bool SymbolHolder::operator<(const SymbolHolder& other) const
+bool Symbol::operator<(const Symbol& other) const
 {
     if (m_size != other.m_size)
     {
@@ -54,7 +54,7 @@ bool SymbolHolder::operator<(const SymbolHolder& other) const
     return false;
 }
 
-bool SymbolHolder::operator==(const SymbolHolder& other) const
+bool Symbol::operator==(const Symbol& other) const
 {
     for (std::size_t i = 0; i < 4; i++)
     {
@@ -67,7 +67,7 @@ bool SymbolHolder::operator==(const SymbolHolder& other) const
 }
 
 // Это ГПТ
-std::size_t SymbolHolder::predictSymbolLenght(char beggining)
+std::size_t Symbol::predictSymbolLenght(char beggining)
 {
     unsigned char uBeggining = static_cast<unsigned char>(beggining);
     if ((uBeggining & 0x80) == 0)
@@ -90,7 +90,7 @@ std::size_t SymbolHolder::predictSymbolLenght(char beggining)
 }
 
 // И это тоже
-bool SymbolHolder::isStartOfSymbol(char part)
+bool Symbol::isStartOfSymbol(char part)
 {
     return (part & 0xC0) == 0x80;
 }

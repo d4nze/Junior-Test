@@ -40,8 +40,8 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Can't open configuration file. " + pathError.value());
     }
 
-    std::map<SymbolHolder, std::int32_t> symbolCounters;
-    std::set<SymbolHolder> uniqueSymbols;
+    std::map<Symbol, std::int32_t> symbolCounters;
+    std::set<Symbol> uniqueSymbols;
     std::vector<Predicate*> predicates;
 
     ConfigurationDataReader configDataReader(configPath, predicates, uniqueSymbols, symbolCounters);

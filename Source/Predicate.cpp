@@ -1,12 +1,12 @@
 #include "Predicate.hpp"
 #include <algorithm>
 
-Predicate::Predicate(const SymbolHolder& symbolHolder, std::int32_t requires)
+Predicate::Predicate(const Symbol& symbolHolder, std::int32_t requires)
     : m_symbolHolder(symbolHolder)
     , m_requires(requires)
 {}
 
-const SymbolHolder& Predicate::getSymbolHolder() const
+const Symbol& Predicate::getSymbolHolder() const
 {
     return m_symbolHolder;
 }

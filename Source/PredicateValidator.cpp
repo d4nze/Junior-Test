@@ -14,7 +14,7 @@ bool PredicateValidator::isValid() const
     return !m_errorMessage.has_value();
 }
 
-const SymbolHolder& PredicateValidator::getSymbol() const
+const Symbol& PredicateValidator::getSymbol() const
 {
     return m_symbol;
 }
@@ -74,13 +74,13 @@ std::optional<std::string> PredicateValidator::checkSymbol(std::ifstream& config
         return "Missing closing '.";
     }
 
-    std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart[1]);
+    std::size_t lenght = Symbol::predictSymbolLenght(symbolPart[1]);
     if (lenght == 0 || lenght + 2 != symbolPart.size())
     {
         return "Unsupported character: " + symbolPart.substr(1, symbolPart.size() - 2) + ".";
     }
     std::string sSymbol = symbolPart.substr(1, lenght);
-    m_symbol = SymbolHolder(sSymbol);
+    m_symbol = Symbol(sSymbol);
 
     return std::nullopt;
 }

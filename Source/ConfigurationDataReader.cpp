@@ -4,8 +4,8 @@
 
 ConfigurationDataReader::ConfigurationDataReader(std::string_view configFilePath,
                                                  std::vector<Predicate*>& predicates,
-                                                 std::set<SymbolHolder>& uniqueSymbols,
-                                                 std::map<SymbolHolder, std::int32_t>& symbolCounters)
+                                                 std::set<Symbol>& uniqueSymbols,
+                                                 std::map<Symbol, std::int32_t>& symbolCounters)
     : m_configFilePath(configFilePath)
     , m_predicates(predicates)
     , m_uniqueSymbols(uniqueSymbols)
@@ -33,7 +33,7 @@ std::optional<std::string> ConfigurationDataReader::readData()
             return predicateValidator.getErrorMessage();
         }
 
-        const SymbolHolder& symbolHolder = predicateValidator.getSymbol();
+        const Symbol& symbolHolder = predicateValidator.getSymbol();
         const std::string& sPredicate = predicateValidator.getPredicate();
         std::int32_t count = predicateValidator.getCount();
 

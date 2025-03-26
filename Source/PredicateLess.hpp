@@ -6,7 +6,7 @@
 class PredicateLess : public Predicate
 {
 public:
-    PredicateLess(const SymbolHolder& symbolHolder, std::int32_t requires);
+    PredicateLess(const Symbol& symbolHolder, std::int32_t requires);
 
     bool compare(std::int32_t compareTo) const override;
 };

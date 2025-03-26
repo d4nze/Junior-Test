@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "SymbolHolder.hpp"
+#include "Symbol.hpp"
 #include "Predicate.hpp"
 
 class ConfigurationDataReader
@@ -16,16 +16,16 @@ class ConfigurationDataReader
 public:
     ConfigurationDataReader(std::string_view configFilePath,
                             std::vector<Predicate*>& predicates,
-                            std::set<SymbolHolder>& uniqueSymbols,
-                            std::map<SymbolHolder, std::int32_t>& symbolCounters);
+                            std::set<Symbol>& uniqueSymbols,
+                            std::map<Symbol, std::int32_t>& symbolCounters);
     
     std::optional<std::string> readData();
 
 private:
     std::string_view m_configFilePath;
     std::vector<Predicate*>& m_predicates;
-    std::set<SymbolHolder>& m_uniqueSymbols;
-    std::map<SymbolHolder, std::int32_t>& m_symbolCounters;
+    std::set<Symbol>& m_uniqueSymbols;
+    std::map<Symbol, std::int32_t>& m_symbolCounters;
     std::string m_part;
 };
 

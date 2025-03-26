@@ -1,8 +1,8 @@
 #include "InputDataReader.hpp"
 
 InputDataReader::InputDataReader(std::string_view inputFilePath,
-                                 const std::set<SymbolHolder>& uniqueSymbols,
-                                 std::map<SymbolHolder, std::int32_t>& symbolCounters)
+                                 const std::set<Symbol>& uniqueSymbols,
+                                 std::map<Symbol, std::int32_t>& symbolCounters)
     : m_inputFilePath(inputFilePath)
     , m_uniqueSymbols(uniqueSymbols)
     , m_symbolCounters(symbolCounters)
@@ -22,7 +22,7 @@ std::optional<std::string> InputDataReader::readData()
         {
             continue;
         }
-        std::size_t lenght = SymbolHolder::predictSymbolLenght(symbolPart);
+        std::size_t lenght = Symbol::predictSymbolLenght(symbolPart);
         if (lenght == 0)
         {
             return "Unsupported character.";
@@ -33,7 +33,7 @@ std::optional<std::string> InputDataReader::readData()
             inputFile >> symbolPart;
             sSymbol[i] = symbolPart;
         }
-        SymbolHolder symbolHolder(sSymbol);
+        Symbol symbolHolder(sSymbol);
         if (m_uniqueSymbols.find(symbolHolder) != m_uniqueSymbols.end())
         {
             m_symbolCounters[symbolHolder]++;
