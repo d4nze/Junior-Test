@@ -3,7 +3,6 @@
 #include "ConfigurationDataReader.hpp"
 #include "InputDataReader.hpp"
 #include "PathValidator.hpp"
-#include "SymbolsHolder.hpp"
 
 std::int32_t exitWithError(std::string_view errorMessage)
 {
@@ -40,8 +39,8 @@ std::int32_t main(std::int32_t argc, char* argv[])
     }
 
     SymbolsHolder symbolsHolder;
-    std::vector<Predicate*> predicates;
-    ConfigurationDataReader configDataReader(configPath, predicates, symbolsHolder);
+    PredicatesHolder predicatesHolder;
+    ConfigurationDataReader configDataReader(configPath, predicatesHolder, symbolsHolder);
     InputDataReader inputDataReader(inputPath, symbolsHolder);
 
     if (auto error = configDataReader.readData())
@@ -53,7 +52,7 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError(error.value());
     }
 
-    for (Predicate* predicate : predicates)
+    for (Predicate* predicate : predicatesHolder.getPredicates())
     {
         if (!predicate->compare(symbolsHolder.getUniqueCounters().at(predicate->getSymbolHolder())))
         {

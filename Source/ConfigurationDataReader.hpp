@@ -4,23 +4,22 @@
 #include <fstream>
 #include <optional>
 #include <string>
-#include <vector>
 
-#include "Predicate.hpp"
+#include "PredicatesHolder.hpp"
 #include "SymbolsHolder.hpp"
 
 class ConfigurationDataReader
 {
 public:
     ConfigurationDataReader(std::string_view configFilePath,
-                            std::vector<Predicate*>& predicates,
+                            PredicatesHolder& predicatesHolder,
                             SymbolsHolder& symbolsHolder);
     
     std::optional<std::string> readData();
 
 private:
     std::string_view m_configFilePath;
-    std::vector<Predicate*>& m_predicates;
+    PredicatesHolder& m_predicatesHolder;
     SymbolsHolder& m_symbolsHolder;
     std::string m_part;
 };

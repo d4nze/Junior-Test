@@ -3,10 +3,10 @@
 #include "PredicateValidator.hpp"
 
 ConfigurationDataReader::ConfigurationDataReader(std::string_view configFilePath,
-                                                 std::vector<Predicate*>& predicates,
+                                                 PredicatesHolder& predicatesHolder,
                                                  SymbolsHolder& symbolsHolder)
     : m_configFilePath(configFilePath)
-    , m_predicates(predicates)
+    , m_predicatesHolder(predicatesHolder)
     , m_symbolsHolder(symbolsHolder)
     , m_part()
 {}
@@ -40,7 +40,7 @@ std::optional<std::string> ConfigurationDataReader::readData()
 
         if (Predicate* predicate = PredicateFactory::createPredicate(symbolHolder, count, sPredicate))
         {
-            m_predicates.push_back(predicate);
+            m_predicatesHolder.getPredicates().push_back(predicate);
         }
     }
     while (!configFile.eof() && configFile >> m_part && m_part == "&&");
