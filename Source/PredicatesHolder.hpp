@@ -13,6 +13,7 @@ class PredicatesHolder
 public:
     PredicatesHolder() = default;
 
+    void addPredicate(Predicate* predicate);
     bool fitsPolicy(const unique_counters_t& uniqueCounters) const;
 
     predicates_t& getPredicates();

@@ -1,5 +1,10 @@
 #include "PredicatesHolder.hpp"
 
+void PredicatesHolder::addPredicate(Predicate* predicate)
+{
+    m_predicates.push_back(predicate);
+}
+
 bool PredicatesHolder::fitsPolicy(const unique_counters_t& uniqueCounters) const
 {
     for (Predicate* predicate : m_predicates)

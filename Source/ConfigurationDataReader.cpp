@@ -49,7 +49,7 @@ std::optional<std::string> ConfigurationDataReader::readData()
 
         if (Predicate* predicate = PredicateFactory::createPredicate(symbol, count, sPredicate))
         {
-            m_predicatesHolder.getPredicates().push_back(predicate);
+            m_predicatesHolder.addPredicate(predicate);
         }
     }
     while (!configFile.eof() && configFile >> m_part && m_part == "&&");
