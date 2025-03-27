@@ -1,4 +1,5 @@
 #include "ConfigurationDataReader.hpp"
+#include "PathValidator.hpp"
 #include "PredicateFactory.hpp"
 #include "PredicateValidator.hpp"
 
@@ -10,6 +11,15 @@ ConfigurationDataReader::ConfigurationDataReader(std::string_view configFilePath
     , m_symbolsHolder(symbolsHolder)
     , m_part()
 {}
+
+std::optional<std::string> ConfigurationDataReader::validatePath() const
+{
+    if (auto pathError = PathValidator::generateErrorMessage(m_configFilePath))
+    {
+        return "Can't open configuration file. " + pathError.value();
+    }
+    return std::nullopt;
+}
 
 std::optional<std::string> ConfigurationDataReader::readData()
 {

@@ -2,7 +2,6 @@
 
 #include "ConfigurationDataReader.hpp"
 #include "InputDataReader.hpp"
-#include "PathValidator.hpp"
 
 std::int32_t exitWithError(std::string_view errorMessage)
 {
@@ -26,15 +25,14 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("No arguments provided");
     }
 
-    std::string configPath("Configuration.txt");
     SymbolsHolder symbolsHolder;
     PredicatesHolder predicatesHolder;
-    ConfigurationDataReader configDataReader(configPath, predicatesHolder, symbolsHolder);
+    ConfigurationDataReader configDataReader("Configuration.txt", predicatesHolder, symbolsHolder);
     InputDataReader inputDataReader(argv[1], symbolsHolder);
 
-    if (auto pathError = PathValidator::generateErrorMessage(configPath))
+    if (auto pathError = configDataReader.validatePath())
     {
-        return exitWithError("Can't open configuration file. " + pathError.value());
+        return exitWithError(pathError.value());
     }
     if (auto pathError = inputDataReader.validatePath())
     {

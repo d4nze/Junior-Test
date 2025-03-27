@@ -15,6 +15,7 @@ public:
                             PredicatesHolder& predicatesHolder,
                             SymbolsHolder& symbolsHolder);
     
+    std::optional<std::string> validatePath() const;
     std::optional<std::string> readData();
 
 private:
