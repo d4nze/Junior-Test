@@ -14,6 +14,8 @@ class SymbolsHolder
 public:
     SymbolsHolder() = default;
 
+    bool hasSymbol(const Symbol& symbol) const;
+
     uniques_t& getUniques();
     const uniques_t& getUniques() const;
 

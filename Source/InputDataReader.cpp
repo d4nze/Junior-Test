@@ -40,10 +40,10 @@ std::optional<std::string> InputDataReader::readData()
             inputFile >> symbolPart;
             sSymbol[i] = symbolPart;
         }
-        Symbol symbolHolder(sSymbol);
-        if (m_symbolsHolder.getUniques().find(symbolHolder) != m_symbolsHolder.getUniques().end())
+        Symbol symbol(sSymbol);
+        if (m_symbolsHolder.hasSymbol(symbol))
         {
-            m_symbolsHolder.getUniqueCounters()[symbolHolder]++;
+            m_symbolsHolder.getUniqueCounters()[symbol]++;
         }
     }
     return std::nullopt;

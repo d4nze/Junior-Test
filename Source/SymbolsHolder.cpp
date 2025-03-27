@@ -1,5 +1,10 @@
 #include "SymbolsHolder.hpp"
 
+bool SymbolsHolder::hasSymbol(const Symbol& symbol) const
+{
+    return m_uniques.find(symbol) != m_uniques.end();
+}
+
 uniques_t& SymbolsHolder::getUniques()
 {
     return m_uniques;
