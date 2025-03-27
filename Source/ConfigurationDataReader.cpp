@@ -41,14 +41,13 @@ std::optional<std::string> ConfigurationDataReader::readData()
             return predicateValidator.getErrorMessage();
         }
 
-        const Symbol& symbolHolder = predicateValidator.getSymbol();
+        const Symbol& symbol = predicateValidator.getSymbol();
         const std::string& sPredicate = predicateValidator.getPredicate();
         std::int32_t count = predicateValidator.getCount();
 
-        m_symbolsHolder.getUniqueCounters()[symbolHolder] = 0;
-        m_symbolsHolder.getUniques().insert(symbolHolder);
+        m_symbolsHolder.addSymbol(symbol);
 
-        if (Predicate* predicate = PredicateFactory::createPredicate(symbolHolder, count, sPredicate))
+        if (Predicate* predicate = PredicateFactory::createPredicate(symbol, count, sPredicate))
         {
             m_predicatesHolder.getPredicates().push_back(predicate);
         }

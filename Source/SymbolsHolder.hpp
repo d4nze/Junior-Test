@@ -16,6 +16,7 @@ public:
     SymbolsHolder() = default;
 
     bool hasSymbol(const Symbol& symbol) const;
+    void addSymbol(const Symbol& symbol);
 
     std::int32_t& getUniqueCounter(const Symbol& symbol);
     const std::int32_t& getUniqueCounter(const Symbol& symbol) const;
