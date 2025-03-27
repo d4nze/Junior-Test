@@ -13,6 +13,7 @@ using unique_counters_t = std::map<Symbol, std::int32_t>;
 class SymbolsHolder
 {
 public:
+    SymbolsHolder(const uniques_t& uniques);
     SymbolsHolder() = default;
 
     bool hasSymbol(const Symbol& symbol) const;

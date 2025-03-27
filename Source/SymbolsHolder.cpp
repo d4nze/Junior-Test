@@ -1,5 +1,13 @@
 #include "SymbolsHolder.hpp"
 
+SymbolsHolder::SymbolsHolder(const uniques_t& uniques) : m_uniques(uniques)
+{
+    for (const Symbol& symbol : m_uniques)
+    {
+        m_uniqueCounters[symbol] = 0;
+    }
+}
+
 bool SymbolsHolder::hasSymbol(const Symbol& symbol) const
 {
     return m_uniques.find(symbol) != m_uniques.end();
