@@ -48,12 +48,9 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError(error.value());
     }
 
-    for (Predicate* predicate : predicatesHolder.getPredicates())
+    if (!predicatesHolder.fitsPolicy(symbolsHolder.getUniqueCounters()))
     {
-        if (!predicate->compare(symbolsHolder.getUniqueCounters().at(predicate->getSymbolHolder())))
-        {
-            return exitSuccessfully("File doesn't fit the policy");
-        }
+        return exitSuccessfully("File doesn't fit the policy");
     }
     return exitSuccessfully("File does fit the policy");
 }
