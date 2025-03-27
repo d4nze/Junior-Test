@@ -12,16 +12,16 @@ ConfigurationDataReader::ConfigurationDataReader(std::string_view configFilePath
     , m_part()
 {}
 
-std::optional<std::string> ConfigurationDataReader::validatePath() const
+message_t ConfigurationDataReader::validatePath() const
 {
-    if (auto pathError = PathValidator::generateErrorMessage(m_configFilePath))
+    if (message_t pathError = PathValidator::generateErrorMessage(m_configFilePath))
     {
         return "Can't open configuration file. " + pathError.value();
     }
     return std::nullopt;
 }
 
-std::optional<std::string> ConfigurationDataReader::readData()
+message_t ConfigurationDataReader::readData()
 {
     std::ifstream configFile(m_configFilePath.data());
     if (!configFile.is_open())
@@ -36,9 +36,9 @@ std::optional<std::string> ConfigurationDataReader::readData()
     do
     {
         PredicateValidator predicateValidator(configFile);
-        if (!predicateValidator.isValid())
+        if (message_t predicateError = predicateValidator.getErrorMessage())
         {
-            return predicateValidator.getErrorMessage();
+            return predicateError;
         }
 
         const Symbol& symbol = predicateValidator.getSymbol();

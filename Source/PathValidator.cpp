@@ -1,7 +1,7 @@
 #include "PathValidator.hpp"
 #include <filesystem>
 
-std::optional<std::string> PathValidator::generateErrorMessage(std::string_view path)
+message_t PathValidator::generateErrorMessage(std::string_view path)
 {
     if (!std::filesystem::exists(path))
     {
@@ -15,5 +15,5 @@ std::optional<std::string> PathValidator::generateErrorMessage(std::string_view 
     {
         return "Path must be an TXT file.";
     }
-    return std::nullopt;
+    return no_message;
 }

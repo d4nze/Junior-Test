@@ -30,22 +30,22 @@ std::int32_t main(std::int32_t argc, char* argv[])
     ConfigurationDataReader configDataReader("Configuration.txt", predicatesHolder, symbolsHolder);
     InputDataReader inputDataReader(argv[1], symbolsHolder);
 
-    if (auto pathError = configDataReader.validatePath())
+    if (message_t pathError = configDataReader.validatePath())
     {
         return exitWithError(pathError.value());
     }
-    if (auto pathError = inputDataReader.validatePath())
+    if (message_t pathError = inputDataReader.validatePath())
     {
         return exitWithError(pathError.value());
     }
 
-    if (auto error = configDataReader.readData())
+    if (message_t readError = configDataReader.readData())
     {
-        return exitWithError(error.value());
+        return exitWithError(readError.value());
     }
-    if (auto error = inputDataReader.readData())
+    if (message_t readError = inputDataReader.readData())
     {
-        return exitWithError(error.value());
+        return exitWithError(readError.value());
     }
 
     if (!predicatesHolder.fitsPolicy(symbolsHolder.getUniqueCounters()))

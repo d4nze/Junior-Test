@@ -9,11 +9,6 @@ PredicateValidator::PredicateValidator(std::ifstream& configFile)
     , m_errorMessage(generateErrorMessage(configFile))
 {}
 
-bool PredicateValidator::isValid() const
-{
-    return !m_errorMessage.has_value();
-}
-
 const Symbol& PredicateValidator::getSymbol() const
 {
     return m_symbol;
@@ -29,29 +24,29 @@ std::int32_t PredicateValidator::getCount() const
     return m_count;
 }
 
-std::string PredicateValidator::getErrorMessage() const
+message_t PredicateValidator::getErrorMessage() const
 {
-    return m_errorMessage.value_or("Unexpected error: can't get optional error message");
+    return m_errorMessage;
 }
 
-std::optional<std::string> PredicateValidator::generateErrorMessage(std::ifstream& configFile)
+message_t PredicateValidator::generateErrorMessage(std::ifstream& configFile)
 {
-    if (auto error = checkSymbol(configFile))
+    if (message_t error = checkSymbol(configFile))
     {
         return error;
     }
-    if (auto error = checkPredicate(configFile))
+    if (message_t error = checkPredicate(configFile))
     {
         return error;
     }
-    if (auto error = checkCount(configFile))
+    if (message_t error = checkCount(configFile))
     {
         return error;
     }
     return std::nullopt;
 }
 
-std::optional<std::string> PredicateValidator::checkSymbol(std::ifstream& configFile)
+message_t PredicateValidator::checkSymbol(std::ifstream& configFile)
 {
     if (configFile.eof())
     {
@@ -85,7 +80,7 @@ std::optional<std::string> PredicateValidator::checkSymbol(std::ifstream& config
     return std::nullopt;
 }
 
-std::optional<std::string> PredicateValidator::checkPredicate(std::ifstream& configFile)
+message_t PredicateValidator::checkPredicate(std::ifstream& configFile)
 {
     if (configFile.eof())
     {
@@ -104,7 +99,7 @@ std::optional<std::string> PredicateValidator::checkPredicate(std::ifstream& con
     return std::nullopt;
 }
 
-std::optional<std::string> PredicateValidator::checkCount(std::ifstream& configFile)
+message_t PredicateValidator::checkCount(std::ifstream& configFile)
 {
     if (configFile.eof())
     {

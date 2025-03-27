@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 
+#include "Message.hpp"
 #include "SymbolsHolder.hpp"
 
 class InputDataReader
@@ -12,8 +13,8 @@ class InputDataReader
 public:
     InputDataReader(std::string_view inputFilePath, SymbolsHolder& symbolsHolder);
     
-    std::optional<std::string> validatePath() const;
-    std::optional<std::string> readData();
+    message_t validatePath() const;
+    message_t readData();
 
 private:
     std::string_view m_inputFilePath;

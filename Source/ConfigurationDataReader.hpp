@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 
+#include "Message.hpp"
 #include "PredicatesHolder.hpp"
 #include "SymbolsHolder.hpp"
 
@@ -15,8 +16,8 @@ public:
                             PredicatesHolder& predicatesHolder,
                             SymbolsHolder& symbolsHolder);
     
-    std::optional<std::string> validatePath() const;
-    std::optional<std::string> readData();
+    message_t validatePath() const;
+    message_t readData();
 
 private:
     std::string_view m_configFilePath;

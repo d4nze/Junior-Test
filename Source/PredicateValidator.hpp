@@ -5,6 +5,7 @@
 #include <string>
 #include <optional>
 
+#include "Message.hpp"
 #include "Symbol.hpp"
 
 class PredicateValidator
@@ -12,18 +13,16 @@ class PredicateValidator
 public:
     PredicateValidator(std::ifstream& configFile);
 
-    bool isValid() const;
-
     const Symbol& getSymbol() const;
     const std::string& getPredicateString() const;
     std::int32_t getCount() const;
-    std::string getErrorMessage() const;
+    message_t getErrorMessage() const;
 
 private:
-    std::optional<std::string> generateErrorMessage(std::ifstream& configFile);
-    std::optional<std::string> checkSymbol(std::ifstream& configFile);
-    std::optional<std::string> checkPredicate(std::ifstream& configFile);
-    std::optional<std::string> checkCount(std::ifstream& configFile);
+    message_t generateErrorMessage(std::ifstream& configFile);
+    message_t checkSymbol(std::ifstream& configFile);
+    message_t checkPredicate(std::ifstream& configFile);
+    message_t checkCount(std::ifstream& configFile);
 
     bool isNumber(char symbol) const;
 
@@ -31,7 +30,7 @@ private:
     Symbol m_symbol;
     std::string m_predicate;
     std::int32_t m_count;
-    std::optional<std::string> m_errorMessage;
+    message_t m_errorMessage;
 };
 
 #endif

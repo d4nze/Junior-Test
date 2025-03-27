@@ -1,13 +1,12 @@
 #ifndef PATH_VALIDATOR_HPP
 #define PATH_VALIDATOR_HPP
 
-#include <string>
-#include <optional>
+#include "Message.hpp"
 
 class PathValidator
 {
 public:
-    static std::optional<std::string> generateErrorMessage(std::string_view path);
+    static message_t generateErrorMessage(std::string_view path);
 };
 
 #endif

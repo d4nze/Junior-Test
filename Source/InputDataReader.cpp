@@ -6,16 +6,16 @@ InputDataReader::InputDataReader(std::string_view inputFilePath, SymbolsHolder& 
     , m_symbolsHolder(symbolsHolder)
 {}
 
-std::optional<std::string> InputDataReader::validatePath() const
+message_t InputDataReader::validatePath() const
 {
-    if (auto pathError = PathValidator::generateErrorMessage(m_inputFilePath))
+    if (message_t pathError = PathValidator::generateErrorMessage(m_inputFilePath))
     {
         return "Can't open input file. " + pathError.value();
     }
     return std::nullopt;
 }
 
-std::optional<std::string> InputDataReader::readData()
+message_t InputDataReader::readData()
 {
     std::ifstream inputFile(m_inputFilePath.data());
     if (!inputFile.is_open())
