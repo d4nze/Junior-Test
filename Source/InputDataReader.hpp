@@ -1,10 +1,6 @@
 #ifndef INPUT_DATA_READER_HPP
 #define INPUT_DATA_READER_HPP
 
-#include <fstream>
-#include <optional>
-#include <string>
-
 #include "Message.hpp"
 #include "SymbolsHolder.hpp"
 

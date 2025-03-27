@@ -3,7 +3,6 @@
 
 #include <map>
 #include <set>
-#include <optional>
 
 #include "Symbol.hpp"
 

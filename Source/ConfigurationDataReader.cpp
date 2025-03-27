@@ -1,4 +1,7 @@
 #include "ConfigurationDataReader.hpp"
+
+#include <fstream>
+
 #include "PathValidator.hpp"
 #include "PredicateFactory.hpp"
 #include "PredicateValidator.hpp"

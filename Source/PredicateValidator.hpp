@@ -2,8 +2,6 @@
 #define PREDICATE_VALIDATOR_HPP
 
 #include <fstream>
-#include <string>
-#include <optional>
 
 #include "Message.hpp"
 #include "Symbol.hpp"

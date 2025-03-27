@@ -1,6 +1,8 @@
 #include "InputDataReader.hpp"
 #include "PathValidator.hpp"
 
+#include <fstream>
+
 InputDataReader::InputDataReader(std::string_view inputFilePath, SymbolsHolder& symbolsHolder)
     : m_inputFilePath(inputFilePath)
     , m_symbolsHolder(symbolsHolder)

@@ -1,10 +1,6 @@
 #ifndef CONFIGURATION_DATA_READER_HPP
 #define CONFIGURATION_DATA_READER_HPP
 
-#include <fstream>
-#include <optional>
-#include <string>
-
 #include "Message.hpp"
 #include "PredicatesHolder.hpp"
 #include "SymbolsHolder.hpp"

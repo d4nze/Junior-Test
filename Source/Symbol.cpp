@@ -1,5 +1,4 @@
 #include "Symbol.hpp"
-
 #include <algorithm>
 
 Symbol::Symbol() : m_size(0)

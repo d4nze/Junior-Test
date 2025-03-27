@@ -1,5 +1,4 @@
 #include "PredicateValidator.hpp"
-
 #include <limits>
 
 PredicateValidator::PredicateValidator(std::ifstream& configFile)

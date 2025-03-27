@@ -1,4 +1,5 @@
 #include "PredicateFactory.hpp"
+
 #include "PredicateEquals.hpp"
 #include "PredicateLess.hpp"
 #include "PredicateMore.hpp"
