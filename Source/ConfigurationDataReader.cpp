@@ -42,7 +42,7 @@ std::optional<std::string> ConfigurationDataReader::readData()
         }
 
         const Symbol& symbol = predicateValidator.getSymbol();
-        const std::string& sPredicate = predicateValidator.getPredicate();
+        const std::string& sPredicate = predicateValidator.getPredicateString();
         std::int32_t count = predicateValidator.getCount();
 
         m_symbolsHolder.addSymbol(symbol);

@@ -19,7 +19,7 @@ const Symbol& PredicateValidator::getSymbol() const
     return m_symbol;
 }
 
-const std::string& PredicateValidator::getPredicate() const
+const std::string& PredicateValidator::getPredicateString() const
 {
     return m_predicate;
 }

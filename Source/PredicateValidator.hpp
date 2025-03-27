@@ -15,7 +15,7 @@ public:
     bool isValid() const;
 
     const Symbol& getSymbol() const;
-    const std::string& getPredicate() const;
+    const std::string& getPredicateString() const;
     std::int32_t getCount() const;
     std::string getErrorMessage() const;
 
