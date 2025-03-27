@@ -3,6 +3,7 @@
 
 #include <map>
 #include <set>
+#include <optional>
 
 #include "Symbol.hpp"
 
@@ -15,6 +16,9 @@ public:
     SymbolsHolder() = default;
 
     bool hasSymbol(const Symbol& symbol) const;
+
+    std::int32_t& getUniqueCounter(const Symbol& symbol);
+    const std::int32_t& getUniqueCounter(const Symbol& symbol) const;
 
     uniques_t& getUniques();
     const uniques_t& getUniques() const;

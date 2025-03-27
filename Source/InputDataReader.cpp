@@ -43,7 +43,7 @@ std::optional<std::string> InputDataReader::readData()
         Symbol symbol(sSymbol);
         if (m_symbolsHolder.hasSymbol(symbol))
         {
-            m_symbolsHolder.getUniqueCounters()[symbol]++;
+            m_symbolsHolder.getUniqueCounter(symbol)++;
         }
     }
     return std::nullopt;
