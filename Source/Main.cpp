@@ -26,22 +26,20 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("No arguments provided");
     }
 
-    std::string inputPath(argv[1]);
     std::string configPath("Configuration.txt");
+    SymbolsHolder symbolsHolder;
+    PredicatesHolder predicatesHolder;
+    ConfigurationDataReader configDataReader(configPath, predicatesHolder, symbolsHolder);
+    InputDataReader inputDataReader(argv[1], symbolsHolder);
 
-    if (auto pathError = PathValidator::generateErrorMessage(inputPath))
-    {
-        return exitWithError("Can't open input file. " + pathError.value());
-    }
     if (auto pathError = PathValidator::generateErrorMessage(configPath))
     {
         return exitWithError("Can't open configuration file. " + pathError.value());
     }
-
-    SymbolsHolder symbolsHolder;
-    PredicatesHolder predicatesHolder;
-    ConfigurationDataReader configDataReader(configPath, predicatesHolder, symbolsHolder);
-    InputDataReader inputDataReader(inputPath, symbolsHolder);
+    if (auto pathError = inputDataReader.validatePath())
+    {
+        return exitWithError(pathError.value());
+    }
 
     if (auto error = configDataReader.readData())
     {

@@ -1,9 +1,19 @@
 #include "InputDataReader.hpp"
+#include "PathValidator.hpp"
 
 InputDataReader::InputDataReader(std::string_view inputFilePath, SymbolsHolder& symbolsHolder)
     : m_inputFilePath(inputFilePath)
     , m_symbolsHolder(symbolsHolder)
 {}
+
+std::optional<std::string> InputDataReader::validatePath() const
+{
+    if (auto pathError = PathValidator::generateErrorMessage(m_inputFilePath))
+    {
+        return "Can't open input file. " + pathError.value();
+    }
+    return std::nullopt;
+}
 
 std::optional<std::string> InputDataReader::readData()
 {
