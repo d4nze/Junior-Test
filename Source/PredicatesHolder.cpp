@@ -4,7 +4,7 @@ bool PredicatesHolder::fitsPolicy(const unique_counters_t& uniqueCounters) const
 {
     for (Predicate* predicate : m_predicates)
     {
-        if (!predicate->compare(uniqueCounters.at(predicate->getSymbolHolder())))
+        if (!predicate->compare(uniqueCounters.at(predicate->getSymbol())))
         {
             return false;
         }

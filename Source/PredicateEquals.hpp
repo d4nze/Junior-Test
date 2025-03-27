@@ -6,7 +6,7 @@
 class PredicateEquals : public Predicate
 {
 public:
-    PredicateEquals(const Symbol& symbolHolder, std::int32_t requires);
+    PredicateEquals(const Symbol& symbol, std::int32_t requires);
 
     bool compare(std::int32_t compareTo) const override;
 };
