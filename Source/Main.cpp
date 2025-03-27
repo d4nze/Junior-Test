@@ -3,8 +3,7 @@
 #include "ConfigurationDataReader.hpp"
 #include "InputDataReader.hpp"
 #include "PathValidator.hpp"
-#include "PredicateFactory.hpp"
-#include "PredicateValidator.hpp"
+#include "SymbolsHolder.hpp"
 
 std::int32_t exitWithError(std::string_view errorMessage)
 {
@@ -40,12 +39,10 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("Can't open configuration file. " + pathError.value());
     }
 
-    std::map<Symbol, std::int32_t> symbolCounters;
-    std::set<Symbol> uniqueSymbols;
+    SymbolsHolder symbolsHolder;
     std::vector<Predicate*> predicates;
-
-    ConfigurationDataReader configDataReader(configPath, predicates, uniqueSymbols, symbolCounters);
-    InputDataReader inputDataReader(inputPath, uniqueSymbols, symbolCounters);
+    ConfigurationDataReader configDataReader(configPath, predicates, symbolsHolder);
+    InputDataReader inputDataReader(inputPath, symbolsHolder);
 
     if (auto error = configDataReader.readData())
     {
@@ -58,7 +55,7 @@ std::int32_t main(std::int32_t argc, char* argv[])
 
     for (Predicate* predicate : predicates)
     {
-        if (!predicate->compare(symbolCounters.at(predicate->getSymbolHolder())))
+        if (!predicate->compare(symbolsHolder.getUniqueCounters().at(predicate->getSymbolHolder())))
         {
             return exitSuccessfully("File doesn't fit the policy");
         }

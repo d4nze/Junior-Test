@@ -1,11 +1,8 @@
 #include "InputDataReader.hpp"
 
-InputDataReader::InputDataReader(std::string_view inputFilePath,
-                                 const std::set<Symbol>& uniqueSymbols,
-                                 std::map<Symbol, std::int32_t>& symbolCounters)
+InputDataReader::InputDataReader(std::string_view inputFilePath, SymbolsHolder& symbolsHolder)
     : m_inputFilePath(inputFilePath)
-    , m_uniqueSymbols(uniqueSymbols)
-    , m_symbolCounters(symbolCounters)
+    , m_symbolsHolder(symbolsHolder)
 {}
 
 std::optional<std::string> InputDataReader::readData()
@@ -34,9 +31,9 @@ std::optional<std::string> InputDataReader::readData()
             sSymbol[i] = symbolPart;
         }
         Symbol symbolHolder(sSymbol);
-        if (m_uniqueSymbols.find(symbolHolder) != m_uniqueSymbols.end())
+        if (m_symbolsHolder.getUniques().find(symbolHolder) != m_symbolsHolder.getUniques().end())
         {
-            m_symbolCounters[symbolHolder]++;
+            m_symbolsHolder.getUniqueCounters()[symbolHolder]++;
         }
     }
     return std::nullopt;
