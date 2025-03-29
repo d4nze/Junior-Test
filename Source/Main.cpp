@@ -25,23 +25,27 @@ std::int32_t main(std::int32_t argc, char* argv[])
         return exitWithError("No arguments provided");
     }
 
-    SymbolsHolder symbolsHolder;
     PredicatesHolder predicatesHolder;
+    SymbolsHolder symbolsHolder;
     ConfigurationDataReader configDataReader("Configuration.txt", predicatesHolder, symbolsHolder);
-    InputDataReader inputDataReader(argv[1], symbolsHolder);
 
     if (message_t pathError = configDataReader.validatePath())
     {
         return exitWithError(pathError.value());
     }
+    if (message_t readError = configDataReader.readData())
+    {
+        return exitWithError(readError.value());
+    }
+
+    InputDataReader inputDataReader(argv[1], symbolsHolder);
     if (message_t pathError = inputDataReader.validatePath())
     {
         return exitWithError(pathError.value());
     }
-
-    if (message_t readError = configDataReader.readData())
+    if (message_t fileError = inputDataReader.generateIndices())
     {
-        return exitWithError(readError.value());
+        return exitWithError(fileError.value());
     }
     if (message_t readError = inputDataReader.readData())
     {
